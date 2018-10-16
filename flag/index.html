@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+    <head>
+
+        <!-- Meta -->
+        <meta charset="utf-8" />
+        <meta name="viewport"    content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Simulate a flag waving in the breeze right in your browser window." />
+
+        <!--
+
+        Flag Waver
+
+            Simulate a flag waving in the breeze right in your browser window.
+
+        -->
+
+        <title>Hack36 MNNIT Allahabad</title>
+
+        <!-- Libraries -->
+        <link type="text/css" rel="stylesheet" href="css/normalize.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
+        <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="js/three.min.js"></script>
+        <script type="text/javascript" src="js/modernizr.custom.95719.js"></script>
+        <script type="text/javascript" src="js/rivets.bundled.min.js"></script>
+
+        <!-- Main -->
+        <link type="text/css" rel="stylesheet" href="css/flagwaver-ui.css" />
+        <script type="text/javascript" src="js/hashvars.js"></script>
+        <script type="text/javascript" src="js/flagwaver.js"></script>
+        <script type="text/javascript" src="js/flagwaver-ui.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="wrapper-page bg-sky">
+
+            <header class="page-header">
+                
+            </header>
+
+            <main class="page-main">
+                <div class="js-flag-canvas"></div>
+
+<a href="#boatMod1"><img src="boat.png" style="width:130px; position: absolute; top: 65%; left: 75%;" id="boat1"></a>
+<a href="#boatMod2"><img src="boat2.png" style="width:130px; position: absolute; top: 75%; left: 20%;" id="boat2"></a>
+<a href="#boatMod3"><img src="boat3.png" style="width:130px; position: absolute; top: 65%; left: 40%;" id="boat3"></a>
+<a href="#boatMod4"><img src="boat4.png" style="width:130px; position: absolute; top: 75%; left: 90%;" id="boat4"></a>
+            </main>
+
+            <aside class="page-controls">
+                <div class="page-controls-basic">
+                    <div class="page-controls-group page-controls-wide">
+                        <h2>Upload Image</h2>
+                        <div class="input-control-group control-img-upload" id="control-img-upload">
+                            <div class="input-btn-group">
+                                <select
+                                    class="input-control input-btn input-select"
+                                    aria-label="Upload image from"
+                                    data-rv-value="flagWaverOpts.flag.imgUploadMode"
+                                    data-rv-on-change="flagWaverControls.flag.setImgUploadMode"
+                                    id="set-img-upload-mode"
+                                >
+                                    <option value="web">Web</option>
+                                    <option value="file">File</option>
+                                </select>
+                            </div>
+                            <input
+                                type="text"
+                                class="input-control input-control-main input-img-web"
+                                placeholder="Enter image URL"
+                                aria-label="Enter image URL"
+                                data-rv-value="flagWaverOpts.flag.imgURL"
+                                id="input-img-link"
+                            />
+                            <div class="input-btn-group input-img-web">
+                                <input
+                                    type="button"
+                                    class="input-control input-btn"
+                                    value="Go!"
+                                    data-rv-on-click="flagWaverControls.flag.setImgURL"
+                                    id="set-img-link"
+                                />
+                            </div>
+                            <div class="input-control input-control-main input-file input-img-file">
+                                <label
+                                    class="input-cover input-face"
+                                    for="open-img-file"
+                                    data-rv-text="flagWaverOpts.flag.imgFilePath | fileName 'Open a file'"
+                                    id="info-img-file"
+                                ></label>
+                                <input
+                                    type="file"
+                                    class="input-cover input-hidden"
+                                    accept="image/*"
+                                    data-rv-on-change="flagWaverControls.flag.setImgFile"
+                                    id="open-img-file"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-controls-group">
+                        <input
+                            type="button"
+                            class="expander input-control input-btn"
+                            data-target="#expandable-controls"
+                            data-text-expanded="Hide Options"
+                            data-text-collapsed="More Options"
+                            aria-expanded="false"
+                            aria-controls="expandable-controls"
+                        />
+                    </div>
+                </div>
+                <div class="page-controls-more expandable" aria-hidden="true" id="expandable-controls">
+                    <div class="page-controls-group">
+                        <h2>Wind</h2>
+                        <input
+                            type="button"
+                            class="input-control input-btn input-btn-md"
+                            data-text-selected="Wind: On"
+                            data-text-unselected="Wind: Off"
+                            data-rv-value="flagWaverOpts.isWindOn | onoff 'Wind On' 'Wind Off'"
+                            data-rv-on-click="flagWaverControls.toggleWind"
+                            id="wind-toggle"
+                        />
+                    </div>
+                    <div class="page-controls-group">
+                        <h2>Hoisting</h2>
+                        <select
+                            class="input-control input-btn input-select"
+                            aria-label="Hoist side"
+                            data-rv-value="flagWaverOpts.flag.hoisting"
+                            data-rv-on-change="flagWaverControls.flag.setHoisting"
+                            id="set-hoisting"
+                        >
+                            <option value="dexter">Dexter</option>
+                            <option value="sinister">Sinister</option>
+                        </select>
+                        <select
+                            class="input-control input-btn input-select"
+                            aria-label="Hoist top edge"
+                            data-rv-value="flagWaverOpts.flag.topEdge"
+                            data-rv-on-change="flagWaverControls.flag.setTopEdge"
+                            id="set-top-edge"
+                        >
+                            <option value="top">Top</option>
+                            <option value="left">Left</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+
+
+
+<script>
+	//boat1
+ function loopDown1(){
+        $("#boat1").animate({
+            marginTop : 10
+            },
+            1000, function() {
+            loopUp1();
+        });
+    }
+
+    function loopUp1(){
+        $("#boat1").animate({
+            marginTop : 0
+            },
+            1000, function() {
+            loopDown1();
+        });
+    }
+
+	loopDown1();
+	//boat2
+ function loopDown2(){
+        $("#boat2").animate({
+            marginTop : 10
+            },
+            1000, function() {
+            loopUp2();
+        });
+    }
+
+    function loopUp2(){
+        $("#boat2").animate({
+            marginTop : 0
+            },
+            1000, function() {
+            loopDown2();
+        });
+    }
+
+	loopDown2();
+//boat3
+ function loopDown3(){
+        $("#boat3").animate({
+            marginTop : 10
+            },
+            1000, function() {
+            loopUp3();
+        });
+    }
+
+    function loopUp3(){
+        $("#boat3").animate({
+            marginTop : 0
+            },
+            1000, function() {
+            loopDown3();
+        });
+    }
+
+	loopDown3();
+//boat4
+ function loopDown4(){
+        $("#boat4").animate({
+            marginTop : 10
+            },
+            1000, function() {
+            loopUp4();
+        });
+    }
+
+    function loopUp4(){
+        $("#boat4").animate({
+            marginTop : 0
+            },
+            1000, function() {
+            loopDown4();
+        });
+    }
+
+	loopDown4();			
+</script>
+<!-- boat1 modal -->
+<div id="boatMod1" class="modalDialog">
+	<div style="color: black;">
+		<a href="#close" title="Close" class="close">X</a>
+		<h2>Modal Box</h2>
+		<p>This is a sample modal box that can be created using the powers of CSS3.</p>
+		<p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a login/register form for users.</p>
+	</div>
+</div>
+<!-- boat2 modal -->
+<div id="boatMod2" class="modalDialog">
+	<div style="color: black;">
+		<a href="#close" title="Close" class="close">X</a>
+		<h2>Modal Box</h2>
+		<p>This is a sample modal box that can be created using the powers of CSS3.</p>
+		<p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a login/register form for users.</p>
+	</div>
+</div>
+<!-- boat3 modal -->
+<div id="boatMod3" class="modalDialog">
+	<div style="color: black;">
+		<a href="#close" title="Close" class="close">X</a>
+		<h2>Modal Box</h2>
+		<p>This is a sample modal box that can be created using the powers of CSS3.</p>
+		<p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a login/register form for users.</p>
+	</div>
+</div>
+<!-- boat4 modal -->
+<div id="boatMod4" class="modalDialog">
+	<div style="color: black;">
+		<a href="#close" title="Close" class="close">X</a>
+		<h2>Modal Box</h2>
+		<p>This is a sample modal box that can be created using the powers of CSS3.</p>
+		<p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a login/register form for users.</p>
+	</div>
+</div>
+</body>
+<style>
+	.modalDialog {
+		position: fixed;
+		font-family: Arial, Helvetica, sans-serif;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: rgba(0,0,0,0.8);
+		z-index: 99999;
+		opacity:0;
+		-webkit-transition: opacity 400ms ease-in;
+		-moz-transition: opacity 400ms ease-in;
+		transition: opacity 400ms ease-in;
+		pointer-events: none;
+	}
+
+	.modalDialog:target {
+		opacity:1;
+		pointer-events: auto;
+	}
+
+	.modalDialog > div {
+		width: 80%;
+		height: 40%;
+		position: relative;
+		margin: 10% auto;
+		padding: 5px 20px 13px 20px;
+		border-radius: 10px;
+		background: #fff;
+		background: -moz-linear-gradient(#fff, #999);
+		background: -webkit-linear-gradient(#fff, #999);
+		background: -o-linear-gradient(#fff, #999);
+	}
+
+	.close {
+		background: #606061;
+		color: #FFFFFF;
+		line-height: 25px;
+		position: absolute;
+		right: -12px;
+		text-align: center;
+		top: -10px;
+		width: 24px;
+		text-decoration: none;
+		font-weight: bold;
+		-webkit-border-radius: 12px;
+		-moz-border-radius: 12px;
+		border-radius: 12px;
+		-moz-box-shadow: 1px 1px 3px #000;
+		-webkit-box-shadow: 1px 1px 3px #000;
+		box-shadow: 1px 1px 3px #000;
+	}
+
+	.close:hover { background: #00d9ff; }
+	</style>
+    <script type="x-shader/x-fragment" id="fragmentShaderDepth">
+        uniform sampler2D texture;
+        varying vec2 vUV;
+        vec4 pack_depth( const in float depth ) {
+            const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );
+            const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );
+            vec4 res = fract( depth * bit_shift );
+            res -= res.xxyz * bit_mask;
+            return res;
+        }
+        void main() {
+            vec4 pixel = texture2D( texture, vUV );
+            if ( pixel.a < 0.5 ) discard;
+            gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );
+        }
+    </script>
+
+    <script type="x-shader/x-vertex" id="vertexShaderDepth">
+        varying vec2 vUV;
+        void main() {
+            vUV = 0.75 * uv;
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    </script>
+
+</html>
